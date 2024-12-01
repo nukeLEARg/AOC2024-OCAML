@@ -1,0 +1,4 @@
+(executable
+ (public_name Day01)
+ (name Day01)
+ (libraries advent core))
