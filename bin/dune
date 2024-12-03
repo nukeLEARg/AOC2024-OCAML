@@ -1,4 +1,9 @@
 (executables
- (public_names Day01 Day02)
- (names Day01 Day02)
+ (public_names Day01 Day02 Day03)
+ (names Day01 Day02 Day03)
  (libraries advent core))
+
+(env
+ (dev
+  (flags
+   (:standard -warn-error -A))))
