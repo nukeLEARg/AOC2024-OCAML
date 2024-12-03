@@ -30,7 +30,9 @@ let () =
   let inputline = read_lines "./inputs/d3input.txt" |> String.concat ~sep:" " in
   let matches = Re.matches filter inputline |> List.map ~f:num_process in
   let matches2 = Re.matches filter2 inputline in
+  (*answer:161085926*)
   let res = List.fold matches ~init:0 ~f:(fun acc i -> acc + i) in
+  (*answer:82045421*)
   let res2 = hell_search matches2 true 0 in
   Printf.printf "\nPart 1: %i\nPart 2: %i\n" res res2
 ;;

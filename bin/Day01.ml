@@ -14,11 +14,13 @@ let () =
     |> Stdlib.List.split
   in
   let snums = List.sort (fst nums) ~compare, List.sort (snd nums) ~compare in
+  (*answer:765748*)
   let res =
     List.fold2_exn (fst snums) (snd snums) ~init:0 ~f:(fun acc x y ->
       let diff = abs (x - y) in
       acc + diff)
   in
+  (*answer:27732508*)
   let res2 =
     List.fold (fst snums) ~init:0 ~f:(fun acc x ->
       let c =

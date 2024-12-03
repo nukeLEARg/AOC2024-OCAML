@@ -28,10 +28,12 @@ let () =
   let nums =
     List.map lines ~f:(fun line -> String.split ~on:' ' line |> List.map ~f:int_of_string)
   in
+  (*answer:213*)
   let res =
     List.fold nums ~init:0 ~f:(fun acc report ->
       acc + if sequence_check report false false then 1 else 0)
   in
+  (*answer:285*)
   let res2 =
     List.fold nums ~init:0 ~f:(fun acc report ->
       acc + if sequence_check report false false || can_remove_one report [] then 1 else 0)
