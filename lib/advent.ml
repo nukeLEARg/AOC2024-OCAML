@@ -25,3 +25,6 @@ let print_int_list lst =
   List.iter ~f:(Printf.printf "%d; ") lst;
   Printf.printf "]\n"
 ;;
+
+let add_pairs (a1, b1) (a2, b2) = a1 + a2, b1 + b2
+let pairs_equal (a1, b1) (a2, b2) = a1 = a2 && b1 = b2
