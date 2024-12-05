@@ -42,7 +42,8 @@ let () =
   let order =
     List.map order ~f:(fun s ->
       match String.split s ~on:'|' |> List.map ~f:int_of_string with
-      | [ x; y ] -> x, y)
+      | [] | [ _ ] -> 0, 0
+      | x :: y :: _ -> x, y)
   in
   let pages =
     List.map pages ~f:(fun s -> String.split s ~on:',' |> List.map ~f:int_of_string)
