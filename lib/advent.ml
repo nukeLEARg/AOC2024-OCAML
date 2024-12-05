@@ -26,5 +26,26 @@ let print_int_list lst =
   Printf.printf "]\n"
 ;;
 
+let print_int_pairs pairs =
+  List.iter ~f:(fun (x, y) -> Printf.printf "(%d, %d)\n" x y) pairs
+;;
+
 let add_pairs (a1, b1) (a2, b2) = a1 + a2, b1 + b2
 let pairs_equal (a1, b1) (a2, b2) = a1 = a2 && b1 = b2
+
+let remove_at_index lst index =
+  let rec aux i = function
+    | [] -> [] (* If the list is empty, return the empty list *)
+    | _x :: xs when i = index ->
+      xs (* If the index matches, return the tail of the list *)
+    | x :: xs -> x :: aux (i + 1) xs (* Otherwise, keep the element and recurse *)
+  in
+  aux 0 lst (* Start the recursion with index 0 *)
+;;
+
+let rec split_on_empty before lst =
+  match lst with
+  | [] -> before, []
+  | "" :: rest -> List.rev before, rest
+  | x :: rest -> split_on_empty (x :: before) rest
+;;
