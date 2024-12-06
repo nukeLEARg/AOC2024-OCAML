@@ -1,12 +1,12 @@
 open Core
 open Advent
 
-let filter_used_pages (pages : int list) (order : (int * int) list) =
+let filter_used_pages pages order =
   List.filter order ~f:(fun (p1, p2) ->
     List.mem pages p1 ~equal:Int.equal && List.mem pages p2 ~equal:Int.equal)
 ;;
 
-let rec check_pages (pages : int list) ((o1, o2) : int * int) =
+let rec check_pages pages (o1, o2) =
   match pages with
   | [] | [ _ ] -> true
   | x :: rest ->
@@ -28,7 +28,7 @@ let rec swap_if_needed (p1, p2) acc lst swap =
   | x :: rest -> swap_if_needed (p1, p2) (x :: acc) rest swap
 ;;
 
-let rec fix_page (pages : int list) (order : (int * int) list) orig =
+let rec fix_page pages order orig =
   match order with
   | [] -> if check_pages_alt pages orig then pages else fix_page pages orig orig
   | x :: rest ->

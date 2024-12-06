@@ -49,3 +49,7 @@ let rec split_on_empty before lst =
   | "" :: rest -> List.rev before, rest
   | x :: rest -> split_on_empty (x :: before) rest
 ;;
+
+let construct_char_grid (s : string list) =
+  List.map s ~f:(fun s -> Stdlib.String.to_seq s |> Stdlib.Array.of_seq) |> Array.of_list
+;;
