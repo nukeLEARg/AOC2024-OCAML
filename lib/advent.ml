@@ -30,6 +30,10 @@ let print_int_pairs pairs =
   List.iter ~f:(fun (x, y) -> Printf.printf "(%d, %d)\n" x y) pairs
 ;;
 
+let print_int_triple triple =
+  List.iter ~f:(fun (x, y, z) -> Printf.printf "(%d, %d, %d)\n" x y z) triple
+;;
+
 let add_pairs (a1, b1) (a2, b2) = a1 + a2, b1 + b2
 let pairs_equal (a1, b1) (a2, b2) = a1 = a2 && b1 = b2
 
@@ -52,4 +56,44 @@ let rec split_on_empty before lst =
 
 let construct_char_grid (s : string list) =
   List.map s ~f:(fun s -> Stdlib.String.to_seq s |> Stdlib.Array.of_seq) |> Array.of_list
+;;
+
+let find_char_coordinates search_char grid =
+  let find_row row_index row =
+    let row_length = String.length row in
+    let rec find_col col_index acc =
+      if col_index >= row_length
+      then acc
+      else (
+        let acc =
+          if Char.equal row.[col_index] search_char
+          then (row_index, col_index) :: acc
+          else acc
+        in
+        find_col (col_index + 1) acc)
+    in
+    find_col 0 []
+  in
+  let rec find_in_grid row_index rows acc =
+    match rows with
+    | [] -> List.rev acc
+    | row :: rest ->
+      let row_coords = find_row row_index row in
+      find_in_grid (row_index + 1) rest (row_coords @ acc)
+  in
+  find_in_grid 0 grid []
+;;
+
+let print_2d_array arr =
+  Array.iter
+    ~f:(fun row ->
+      Array.iter ~f:(Printf.printf "%c ") row;
+      (* Print each character in the row *)
+      Printf.printf "\n" (* Newline after each row *))
+    arr
+;;
+
+let char_grid_to_string_grid charr =
+  Array.to_list
+    (Array.map charr ~f:(fun arr -> String.init (Array.length arr) ~f:(Array.get arr)))
 ;;

@@ -26,44 +26,49 @@ let find_guard map =
   search_row 0
 ;;
 
-let rec loopsearch map (gx, gy) direction loopcount =
+let rec loopsearch map (gx, gy) direction (prepos : (int * int * int) list) =
   let nx, ny = add_pairs (gx, gy) directions.(direction) in
   if nx >= Array.length map || ny >= Array.length map.(0) || nx < 0 || ny < 0
-  then false
+  then 0
   else if
-    List.exists loopcount ~f:(fun (ogx, ogy, onx, ony) ->
-      if ogx = gx && ogy = gy && onx = nx && ony = ny then true else false)
-  then true
-  else if Char.equal map.(nx).(ny) '#' || Char.equal map.(nx).(ny) '0'
-  then loopsearch map (gx, gy) (next_direction direction) loopcount
-  else loopsearch map (nx, ny) direction ((gx, gy, nx, ny) :: loopcount)
+    List.exists prepos ~f:(fun (ogx, ogy, dir) ->
+      if ogx = gx && ogy = gy && dir = direction then true else false)
+  then 1
+  else if Char.equal map.(nx).(ny) '#'
+  then loopsearch map (gx, gy) (next_direction direction) prepos
+  else loopsearch map (nx, ny) direction ((gx, gy, direction) :: prepos)
 ;;
 
-let rec move_guard map (gx, gy) direction loopspots =
+let rec move_guard map (gx, gy) direction =
   let nx, ny = add_pairs (gx, gy) directions.(direction) in
   let _ = map.(gx).(gy) <- 'X' in
   if nx >= Array.length map || ny >= Array.length map.(0) || nx < 0 || ny < 0
-  then map, loopspots
+  then map
   else if Char.equal map.(nx).(ny) '#'
-  then move_guard map (gx, gy) (next_direction direction) loopspots
-  else (
-    let loopmap = Array.copy map in
-    let _ = loopmap.(nx).(ny) <- '0' in
-    if loopsearch map (gx, gy) (next_direction direction) []
-    then (
-      let loopspots = (nx, ny) :: loopspots in
-      move_guard map (nx, ny) direction loopspots)
-    else move_guard map (nx, ny) direction loopspots)
+  then move_guard map (gx, gy) (next_direction direction)
+  else move_guard map (nx, ny) direction
+;;
+
+let gen_blocker_maps (map : char array array) =
+  let newblockers = find_char_coordinates 'X' (char_grid_to_string_grid map) in
+  List.map newblockers ~f:(fun (x, y) ->
+    let blockedmap = Array.map ~f:(fun map -> Array.copy map) map |> Array.copy in
+    let _ = blockedmap.(x).(y) <- '#' in
+    blockedmap)
 ;;
 
 let () =
   let map = read_lines "./inputs/d6input.txt" |> construct_char_grid in
-  let newmap, looppoints = move_guard map (find_guard map) 0 [] in
+  let guardstart = find_guard map in
+  let newmap = move_guard map guardstart 0 in
   let res =
     Array.fold newmap ~init:0 ~f:(fun acc arr ->
       acc
       + Array.fold arr ~init:0 ~f:(fun acc c -> if Char.equal c 'X' then acc + 1 else acc))
   in
-  let res2 = List.length looppoints in
-  Printf.printf "\nPart 1: %i\nPart 2: %i\n" res res2
+  let _ = newmap.(fst guardstart).(snd guardstart) <- '^' in
+  let blocked_maps = gen_blocker_maps newmap in
+  let test = List.map blocked_maps ~f:(fun map -> loopsearch map guardstart 0 []) in
+  let res2 = List.fold test ~init:0 ~f:(fun acc i -> acc + i) in
+  printf "\nPart 1: %i\nPart 2: %i\n" res res2
 ;;
