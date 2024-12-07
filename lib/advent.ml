@@ -97,3 +97,37 @@ let char_grid_to_string_grid charr =
   Array.to_list
     (Array.map charr ~f:(fun arr -> String.init (Array.length arr) ~f:(Array.get arr)))
 ;;
+
+module IntTripleComparator = struct
+  module T = struct
+    type t = int * int * int
+
+    let compare (a1, b1, c1) (a2, b2, c2) =
+      match Int.compare a1 a2 with
+      | 0 ->
+        (match Int.compare b1 b2 with
+         | 0 -> Int.compare c1 c2
+         | other -> other)
+      | other -> other
+    ;;
+
+    let sexp_of_t (a, b, c) =
+      Sexp.List [ Int.sexp_of_t a; Int.sexp_of_t b; Int.sexp_of_t c ]
+    ;;
+
+    let t_of_sexp = function
+      | Sexp.List [ a; b; c ] -> Int.t_of_sexp a, Int.t_of_sexp b, Int.t_of_sexp c
+      | _ -> failwith "Invalid S-expression for int * int * int"
+    ;;
+  end
+
+  include T
+  include Comparator.Make (T)
+end
+
+let concat_integers a b =
+  let a_str = Int.to_string a in
+  let b_str = Int.to_string b in
+  let concatenated_str = a_str ^ b_str in
+  Int.of_string concatenated_str
+;;
