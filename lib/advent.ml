@@ -126,8 +126,8 @@ module IntTripleComparator = struct
 end
 
 let concat_integers a b =
-  let a_str = Int.to_string a in
-  let b_str = Int.to_string b in
-  let concatenated_str = a_str ^ b_str in
-  Int.of_string concatenated_str
+  let num_digits_b =
+    if b = 0 then 1 else 1 + int_of_float (Float.log10 (float_of_int b))
+  in
+  (a * Int.pow 10 num_digits_b) + b
 ;;
