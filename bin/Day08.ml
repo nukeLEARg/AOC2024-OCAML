@@ -67,6 +67,7 @@ let () =
   let antinodes =
     Map.map antenas_loc_map ~f:(fun coords -> find_antinodes [] coords [])
   in
+  (*answer:254*)
   let res =
     Map.data antinodes
     |> List.concat
@@ -77,6 +78,7 @@ let () =
   let antinodes2 =
     Map.map antenas_loc_map ~f:(fun coords -> find_pt2_antinodes coords mX mY)
   in
+  (*answer:951*)
   let res2 =
     Map.data antinodes2
     |> List.concat
