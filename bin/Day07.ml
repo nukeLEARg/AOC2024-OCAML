@@ -27,6 +27,7 @@ let rec compute acc ex =
   | `Mul :: `Num n :: rest -> compute (acc * n) rest
   | `Con :: `Num n :: rest -> compute (concat_integers acc n) rest
   | `Num n :: rest -> compute n rest
+  | _ -> acc
 ;;
 
 let () =
@@ -41,7 +42,8 @@ let () =
           |> List.filter ~f:(fun s -> not (String.is_empty s))
           |> List.map ~f:Int.of_string
         in
-        ans, nums)
+        ans, nums
+      | _ -> 0, [])
   in
   (*answer:4122618559853*)
   let res =

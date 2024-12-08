@@ -1,6 +1,6 @@
 (executables
- (public_names Day01 Day02 Day03 Day04 Day05 Day06 Day07)
- (names Day01 Day02 Day03 Day04 Day05 Day06 Day07)
+ (public_names Day01 Day02 Day03 Day04 Day05 Day06 Day07 Day08)
+ (names Day01 Day02 Day03 Day04 Day05 Day06 Day07 Day08)
  (libraries advent core))
 
 (env
