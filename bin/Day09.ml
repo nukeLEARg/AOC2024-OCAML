@@ -89,9 +89,11 @@ let () =
   let line = read_line_as_one "./inputs/d9input.txt" in
   let fs1 = construct_fs line in
   compress_fs 1 fs1;
+  (*answer:6310675819476*)
   let res = check_fs fs1 in
   let fs2 = construct_fs line in
   compress_fs 10 fs2;
+  (*answer:6335972980679*)
   let res2 = check_fs fs2 in
   Printf.printf "\nPart 1: %i\nPart 2: %i\n" res res2
 ;;

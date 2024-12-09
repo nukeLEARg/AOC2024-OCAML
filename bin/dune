@@ -1,7 +1,7 @@
 (executables
- (public_names Day01 Day02 Day03 Day04 Day05 Day06 Day07 Day08 Day09)
- (names Day01 Day02 Day03 Day04 Day05 Day06 Day07 Day08 Day09)
- (libraries advent core))
+ (public_names Runner Day01 Day02 Day03 Day04 Day05 Day06 Day07 Day08 Day09)
+ (names Runner Day01 Day02 Day03 Day04 Day05 Day06 Day07 Day08 Day09)
+ (libraries advent core core_unix))
 
 (env
  (dev
