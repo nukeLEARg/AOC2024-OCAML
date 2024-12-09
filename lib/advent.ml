@@ -6,6 +6,10 @@ let read_lines file =
     String.split_lines x)
 ;;
 
+let read_line_as_one file =
+  Stdio.In_channel.with_file file ~f:(fun chan -> In_channel.input_all chan)
+;;
+
 let split_first s =
   let a = String.split ~on:' ' s in
   List.hd_exn a
