@@ -1,6 +1,17 @@
 (executables
- (public_names Runner Day01 Day02 Day03 Day04 Day05 Day06 Day07 Day08 Day09)
- (names Runner Day01 Day02 Day03 Day04 Day05 Day06 Day07 Day08 Day09)
+ (public_names
+  Runner
+  Day01
+  Day02
+  Day03
+  Day04
+  Day05
+  Day06
+  Day07
+  Day08
+  Day09
+  Day10)
+ (names Runner Day01 Day02 Day03 Day04 Day05 Day06 Day07 Day08 Day09 Day10)
  (libraries advent core core_unix))
 
 (env

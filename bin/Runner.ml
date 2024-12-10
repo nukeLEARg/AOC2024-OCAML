@@ -26,11 +26,11 @@ let dayrunner (d : int) =
         Core_unix.system (sprintf "_build/default/bin/Day%02d.exe" i))
     with
     | Ok () -> printf "\n"
-    | err -> printf "Command failed: %s\n" (Core_unix.Exit_or_signal.to_string_hum err)
+    | err -> printf "\nCommand failed: %s\n" (Core_unix.Exit_or_signal.to_string_hum err)
   done
 ;;
 
 let () =
   let _ = printf "Starting Execution of all Days\n%!" in
-  time_execution_t (fun () -> dayrunner 9)
+  time_execution_t (fun () -> dayrunner 10)
 ;;
