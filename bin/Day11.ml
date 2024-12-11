@@ -1,44 +1,57 @@
 open Core
 open Advent
 
-let count_digits n =
-  if n = 0 then 1 else int_of_float (Float.log10 (Float.abs (float_of_int n))) + 1
+let blink stone count stone_freq =
+  match stone with
+  | 0 ->
+    Hashtbl.update stone_freq 1 ~f:(function
+      | None -> count
+      | Some c -> c + count)
+  | _ ->
+    if count_digits stone mod 2 = 0
+    then (
+      let stone1, stone2 = split_number stone in
+      Hashtbl.update stone_freq stone1 ~f:(function
+        | None -> count
+        | Some c -> c + count);
+      Hashtbl.update stone_freq stone2 ~f:(function
+        | None -> count
+        | Some c -> c + count))
+    else (
+      let new_s = stone * 2024 in
+      Hashtbl.update stone_freq new_s ~f:(function
+        | None -> count
+        | Some c -> c + count))
 ;;
 
-let split_number n =
-  let digits = int_of_float (Float.log10 (float_of_int n)) + 1 in
-  let half_digits = digits / 2 in
-  let divisor = int_of_float (10.0 ** float_of_int half_digits) in
-  let left = n / divisor in
-  let right = n mod divisor in
-  right, left
+let process_frequency stone_freq =
+  let new_stones = Hashtbl.create (module Int) in
+  Hashtbl.iteri stone_freq ~f:(fun ~key:stone ~data:count -> blink stone count new_stones);
+  new_stones
 ;;
 
-let rec process_stone_set (stones : int list) (acc : int list) =
-  match stones with
-  | [] -> acc
-  | n :: rest when n = 0 -> process_stone_set rest (1 :: acc)
-  | n :: rest when count_digits n mod 2 = 0 ->
-    let split = split_number n in
-    process_stone_set rest (fst split :: snd split :: acc)
-  | n :: rest -> process_stone_set rest ((n * 2024) :: acc)
-;;
-
-let cycler stones cycles =
-  let rec aux current_stones cycle =
-    if cycle = 0
-    then current_stones
-    else aux (process_stone_set current_stones []) (cycle - 1)
-  in
-  aux stones cycles
+let rec cycle freq cycles =
+  if cycles = 0 then freq else cycle (process_frequency freq) (cycles - 1)
 ;;
 
 let () =
-  let input = read_line_as_one "./inputs/d11test.txt" in
-  let stones = String.split ~on:' ' input |> List.map ~f:int_of_string in
-  let pt1stones = cycler stones 25 in
-  let pt2stones = cycler stones 25 in
-  let res = List.length pt1stones in
-  let res2 = List.length pt2stones in
+  let input =
+    read_line_as_one "./inputs/d11input.txt"
+    |> String.split ~on:' '
+    |> List.map ~f:int_of_string
+  in
+  let initial_stones = Hashtbl.create (module Int) in
+  List.iter input ~f:(fun n ->
+    Hashtbl.update initial_stones n ~f:(function
+      | None -> 1
+      | Some count -> count + 1));
+  let pt1_stones = cycle initial_stones 25 in
+  let res =
+    Hashtbl.fold pt1_stones ~init:0 ~f:(fun ~key:_ ~data:count acc -> acc + count)
+  in
+  let pt2_stones = cycle pt1_stones 50 in
+  let res2 =
+    Hashtbl.fold pt2_stones ~init:0 ~f:(fun ~key:_ ~data:count acc -> acc + count)
+  in
   Printf.printf "\nPart 1: %i\nPart 2: %i\n" res res2
 ;;

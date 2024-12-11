@@ -129,8 +129,20 @@ module IntTripleComparator = struct
   include Comparator.Make (T)
 end
 
+let count_digits n =
+  if n = 0 then 1 else int_of_float (Float.log10 (Float.abs (float_of_int n))) + 1
+;;
+
 let concat_integers a b =
-  let rec count_digits n = if n = 0 then 0 else 1 + count_digits (n / 10) in
   let num_digits_b = count_digits b in
   (a * Int.pow 10 num_digits_b) + b
+;;
+
+let split_number n =
+  let digits = count_digits n in
+  let half_digits = digits / 2 in
+  let divisor = Int.pow 10 half_digits in
+  let left = n / divisor in
+  let right = n mod divisor in
+  left, right
 ;;
