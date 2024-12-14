@@ -146,3 +146,22 @@ let split_number n =
   let right = n mod divisor in
   left, right
 ;;
+
+module Pos = struct
+  type t = int * int
+
+  let compare (x1, y1) (x2, y2) =
+    match Int.compare x1 x2 with
+    | 0 -> Int.compare y1 y2
+    | c -> c
+  ;;
+
+  let sexp_of_t (x, y) =
+    Sexp.List [ Sexp.Atom (Int.to_string x); Sexp.Atom (Int.to_string y) ]
+  ;;
+
+  let t_of_sexp = function
+    | Sexp.List [ Sexp.Atom x; Sexp.Atom y ] -> Int.of_string x, Int.of_string y
+    | _ -> failwith "Invalid position sexp"
+  ;;
+end

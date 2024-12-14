@@ -17,7 +17,11 @@ let construct_fs line =
     | n :: hd, Free -> mk (Array.append acc (Array.create ~len:n (-1))) id File hd
     | [], _ -> acc
   in
-  mk [||] 0 File (String.to_list line |> List.map ~f:Char.get_digit_exn)
+  mk
+    [||]
+    0
+    File
+    (String.to_list line |> List.map ~f:(fun ch -> Char.to_int ch - Char.to_int '0'))
 ;;
 
 let check_fs fs =
@@ -86,7 +90,7 @@ let compress_fs max fs =
 ;;
 
 let () =
-  let line = read_line_as_one "./inputs/botinput.txt" in
+  let line = read_line_as_one "./inputs/d9input.txt" in
   let fs1 = construct_fs line in
   compress_fs 1 fs1;
   (*answer:6310675819476*)

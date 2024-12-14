@@ -11,7 +11,8 @@
   Day08
   Day09
   Day10
-  Day11)
+  Day11
+  Day12)
  (names
   Runner
   Day01
@@ -24,7 +25,8 @@
   Day08
   Day09
   Day10
-  Day11)
+  Day11
+  Day12)
  (libraries advent core core_unix))
 
 (env
