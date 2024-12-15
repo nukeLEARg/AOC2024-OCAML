@@ -62,12 +62,30 @@ let pricemoves (moves : (int * int) list list) : int list =
       if acc = 0 || tokens < acc then tokens else acc))
 ;;
 
+let solve_machinept2 (machine : claw_machine) : int =
+  let a =
+    ((machine.ry * machine.ax) - (machine.rx * machine.ay))
+    / ((machine.by * machine.ax) - (machine.bx * machine.ay))
+  in
+  let b = (machine.rx - (a * machine.bx)) / machine.ax in
+  if
+    (b * machine.ax) + (a * machine.bx) = machine.rx
+    && (b * machine.ay) + (a * machine.by) = machine.ry
+  then (3 * b) + a
+  else 0
+;;
+
 let () =
-  let lines = read_lines "./inputs/d13input.txt" in
+  let lines = read_lines "./inputs/botinput.txt" in
   let machines = parse_input lines in
   let pt1moves = List.map machines ~f:(fun m -> solve_machinept1 m) in
   let pt1prices = pricemoves pt1moves in
   let res = List.fold pt1prices ~init:0 ~f:(fun acc price -> acc + price) in
-  let res2 = 1 in
+  let pt2machines =
+    List.map machines ~f:(fun machine ->
+      { machine with rx = machine.rx + 10000000000000; ry = machine.ry + 10000000000000 })
+  in
+  let pt2prices = List.map pt2machines ~f:solve_machinept2 in
+  let res2 = List.fold pt2prices ~init:0 ~f:(fun acc price -> acc + price) in
   Printf.printf "\nPart 1: %i\nPart 2: %i\n" res res2
 ;;
