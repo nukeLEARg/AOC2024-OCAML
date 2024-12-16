@@ -31,7 +31,7 @@
   Day12
   Day13
   Day14)
- (libraries advent core core_unix re2))
+ (libraries advent core core_unix))
 
 (env
  (dev

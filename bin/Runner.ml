@@ -32,5 +32,5 @@ let dayrunner (d : int) =
 
 let () =
   let _ = printf "Starting Execution of all Days\n%!" in
-  time_execution_t (fun () -> dayrunner 13)
+  time_execution_t (fun () -> dayrunner 14)
 ;;
