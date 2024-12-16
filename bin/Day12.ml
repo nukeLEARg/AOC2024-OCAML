@@ -142,10 +142,12 @@ let () =
     List.map coords ~f:(fun y -> flood_fill garden y)
     |> List.filter ~f:(fun a -> not (List.is_empty a))
   in
+  (*answer:1363484*)
   let res =
     List.map regions ~f:(fun r -> fence1 garden r)
     |> List.fold ~init:0 ~f:(fun acc x -> acc + x)
   in
+  (*answer:838988*)
   let res2 =
     List.map regions ~f:(fun r -> fence2 garden r)
     |> List.fold ~init:0 ~f:(fun acc x -> acc + x)

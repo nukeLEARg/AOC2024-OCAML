@@ -46,10 +46,12 @@ let () =
       | None -> 1
       | Some count -> count + 1));
   let pt1_stones = cycle initial_stones 25 in
+  (*answer:189167*)
   let res =
     Hashtbl.fold pt1_stones ~init:0 ~f:(fun ~key:_ ~data:count acc -> acc + count)
   in
   let pt2_stones = cycle pt1_stones 50 in
+  (*answer:225253278506288*)
   let res2 =
     Hashtbl.fold pt2_stones ~init:0 ~f:(fun ~key:_ ~data:count acc -> acc + count)
   in

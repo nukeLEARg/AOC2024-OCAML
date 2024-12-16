@@ -90,8 +90,10 @@ let () =
         then { acc with br = acc.br + 1 }
         else acc)
   in
+  (*answer:220971520*)
   let res = safetyfactor quads in
+  (*answer:6355*)
   let viz, res2 = search_tree 0 bots in
-  printf "%s" viz;
+  printf "\n%s" viz;
   Printf.printf "\nPart 1: %i\nPart 2: %i\n" res res2
 ;;
