@@ -90,7 +90,7 @@ let compress_fs max fs =
 ;;
 
 let () =
-  let line = read_line_as_one "./inputs/d9input.txt" in
+  let line = read_line_as_one "./inputs/d9/input.txt" in
   let fs1 = construct_fs line in
   compress_fs 1 fs1;
   (*answer:6310675819476*)

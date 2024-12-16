@@ -27,7 +27,7 @@ let rec hell_search lst dd acc =
 ;;
 
 let () =
-  let inputline = read_lines "./inputs/d3input.txt" |> String.concat ~sep:" " in
+  let inputline = read_lines "./inputs/d3/input.txt" |> String.concat ~sep:" " in
   let matches = Re.matches filter inputline |> List.map ~f:num_process in
   let matches2 = Re.matches filter2 inputline in
   (*answer:161085926*)

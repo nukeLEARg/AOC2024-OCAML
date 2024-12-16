@@ -45,7 +45,7 @@ let rec find_trails_2 map (x, y) current_value =
 ;;
 
 let () =
-  let lines = read_lines "./inputs/d10input.txt" in
+  let lines = read_lines "./inputs/d10/input.txt" in
   let map =
     List.map lines ~f:(fun row ->
       String.to_list row |> List.map ~f:(fun ch -> Char.to_int ch - Char.to_int '0'))

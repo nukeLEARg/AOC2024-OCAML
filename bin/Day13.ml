@@ -76,7 +76,7 @@ let solve_machinept2 (machine : claw_machine) : int =
 ;;
 
 let () =
-  let lines = read_lines "./inputs/botinput.txt" in
+  let lines = read_lines "./inputs/d13/input.txt" in
   let machines = parse_input lines in
   let pt1moves = List.map machines ~f:(fun m -> solve_machinept1 m) in
   let pt1prices = pricemoves pt1moves in

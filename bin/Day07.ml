@@ -32,7 +32,7 @@ let rec compute acc ex =
 
 let () =
   let lines =
-    read_lines "./inputs/d7input.txt"
+    read_lines "./inputs/d7/input.txt"
     |> List.map ~f:(fun line ->
       match String.split line ~on:':' with
       | [ ans; nums ] ->

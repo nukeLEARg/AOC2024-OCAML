@@ -24,7 +24,7 @@ let rec can_remove_one nums prev =
 ;;
 
 let () =
-  let lines = read_lines "./inputs/d2input.txt" in
+  let lines = read_lines "./inputs/d2/input.txt" in
   let nums =
     List.map lines ~f:(fun line -> String.split ~on:' ' line |> List.map ~f:int_of_string)
   in

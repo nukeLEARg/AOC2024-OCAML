@@ -61,7 +61,7 @@ let gen_blocker_maps (map : char array array) =
 ;;
 
 let () =
-  let map = read_lines "./inputs/mikald6.txt" |> construct_char_grid in
+  let map = read_lines "./inputs/d6/input.txt" |> construct_char_grid in
   let guardstart = find_guard map in
   let newmap = move_guard map guardstart 0 in
   (*answer:4559*)

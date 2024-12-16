@@ -36,7 +36,7 @@ let rec cycle freq cycles =
 
 let () =
   let input =
-    read_line_as_one "./inputs/d11input.txt"
+    read_line_as_one "./inputs/d11/input.txt"
     |> String.split ~on:' '
     |> List.map ~f:int_of_string
   in

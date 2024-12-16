@@ -55,7 +55,7 @@ let find_pt2_antinodes ant_locs mX mY =
 ;;
 
 let () =
-  let lines = read_lines "./inputs/d8input.txt" in
+  let lines = read_lines "./inputs/d8/input.txt" in
   let mX = List.length lines - 1 in
   let mY = String.length (List.hd_exn lines) - 1 in
   let antenas_loc = find_ants lines in

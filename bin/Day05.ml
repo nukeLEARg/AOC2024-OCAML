@@ -37,7 +37,7 @@ let rec fix_page pages order orig =
 ;;
 
 let () =
-  let lines = read_lines "./inputs/d5input.txt" in
+  let lines = read_lines "./inputs/d5/input.txt" in
   let order, pages = split_on_empty [] lines in
   let order =
     List.map order ~f:(fun s ->

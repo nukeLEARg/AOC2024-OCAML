@@ -135,7 +135,7 @@ let fence2 map area =
 
 let () =
   let garden =
-    read_lines "./inputs/d12input.txt" |> List.map ~f:String.to_array |> List.to_array
+    read_lines "./inputs/d12/input.txt" |> List.map ~f:String.to_array |> List.to_array
   in
   let coords = build_cords garden in
   let regions =

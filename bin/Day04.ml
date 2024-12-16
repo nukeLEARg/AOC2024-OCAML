@@ -66,18 +66,20 @@ let count_mas_cross centers mcord scord =
     [ (-1, 1), (1, -1); (1, 1), (-1, -1); (-1, -1), (1, 1); (1, -1), (-1, 1) ]
   in
   List.fold centers ~init:0 ~f:(fun acc ccord ->
-    if List.fold offsets ~init:0 ~f:(fun acc2 (moffset, soffset) ->
-         if List.mem mcord (add_pairs moffset ccord) ~equal:pairs_equal
-            && List.mem scord (add_pairs soffset ccord) ~equal:pairs_equal
-         then acc2 + 1
-         else acc2)
-       = 2
+    if
+      List.fold offsets ~init:0 ~f:(fun acc2 (moffset, soffset) ->
+        if
+          List.mem mcord (add_pairs moffset ccord) ~equal:pairs_equal
+          && List.mem scord (add_pairs soffset ccord) ~equal:pairs_equal
+        then acc2 + 1
+        else acc2)
+      = 2
     then acc + 1
     else acc)
 ;;
 
 let () =
-  let lines = read_lines "./inputs/d4input.txt" in
+  let lines = read_lines "./inputs/d4/input.txt" in
   (*answer:2496*)
   let res = count_xmas lines in
   let mcord = find_char_coordinates 'M' lines in

@@ -2,7 +2,7 @@ open Core
 open Advent
 
 let () =
-  let lines = read_lines "./inputs/d1input.txt" in
+  let lines = read_lines "./inputs/d1/input.txt" in
   let nums =
     List.map lines ~f:(fun line ->
       let n =
