@@ -49,7 +49,9 @@
   Day21
   Day22
   Day23)
- (libraries advent core core_unix))
+ (preprocess
+  (pps ppx_jane))
+ (libraries advent core core_unix ocamlgraph))
 
 (env
  (dev

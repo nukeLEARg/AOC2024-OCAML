@@ -1,5 +1,6 @@
 open Core
 
+
 let read_lines file =
   Stdio.In_channel.with_file file ~f:(fun chan ->
     let x = In_channel.input_all chan in
@@ -165,3 +166,14 @@ module Pos = struct
     | _ -> failwith "Invalid position sexp"
   ;;
 end
+
+module PosComparator = struct
+  include Pos
+  include Comparator.Make (Pos)
+end
+
+module PosSet = Set.Make (PosComparator)
+
+let grid_lim grid = Array.length grid.(0), Array.length grid ;;
+
+

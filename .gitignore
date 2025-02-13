@@ -35,4 +35,9 @@ _opam/
 #perf
 perf.data
 test.perf
+*.out
+
+
+#outputs
+*.dot
 *.out*
