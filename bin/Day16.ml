@@ -1,13 +1,15 @@
 open Core
 open Core.Poly
 open Graph
-open Advent
 
 type direction =
   | East
   | South
   | West
   | North
+
+let highlighted_vertices = ref []
+let highlighted_edges = ref []
 
 module CordDirMap = struct
   module Vertex = struct
@@ -52,9 +54,23 @@ module Display = struct
 
   let graph_attributes _ = []
   let default_vertex_attributes _ = []
-  let vertex_attributes _ = []
+
+  let vertex_attributes v =
+    if List.mem !highlighted_vertices v ~equal:(fun a b -> CordDirMap.Vertex.equal a b)
+    then [ `Fillcolor 16711680; `Style `Filled]
+    else []
+  ;;
+
   let default_edge_attributes _ = []
-  let edge_attributes (_, w, _) = [ `Label (string_of_int w) ]
+
+  let edge_attributes (v1, w, v2) =
+    if
+      List.mem !highlighted_edges (v1, w, v2) ~equal:(fun (a1, w1, a2) (b1, w2, b2) ->
+        CordDirMap.Vertex.equal a1 b1 && CordDirMap.Vertex.equal a2 b2 && w1 = w2)
+    then [ `Color 16711680 ; `Label (string_of_int w) ]
+    else [ `Label (string_of_int w) ]
+  ;;
+
   let get_subgraph _ = None
 end
 
@@ -88,14 +104,6 @@ let () =
     CordDirMap.add_edge_e graph (v2, w, v1))
 ;;
 
-let () =
-  Dot.output_graph stdout graph;
-  let dot_file = Out_channel.create "graph.dot" in
-  Dot.output_graph dot_file graph;
-  Out_channel.close dot_file;
-  Printf.printf "File written to graph.dot\n"
-;;
-
 module W = struct
   type edge = CordDirMap.E.t
   type t = int
@@ -125,11 +133,21 @@ let () =
         "%s --[%d]--> %s\n"
         (Display.vertex_name v1)
         w
-        (Display.vertex_name v2))
+        (Display.vertex_name v2);
+      highlighted_vertices := v1 :: !highlighted_vertices;
+      highlighted_vertices := v2 :: !highlighted_vertices;
+      highlighted_edges := (v1, w, v2) :: !highlighted_edges)
   with
   | Not_found ->
     Printf.printf
       "No path found from %s to %s\n"
       (Display.vertex_name start_vertex)
       (Display.vertex_name end_vertex)
+;;
+
+let () =
+  let dot_file = Out_channel.create "graph.dot" in
+  Dot.output_graph dot_file graph;
+  Out_channel.close dot_file;
+  Printf.printf "File written to graph.dot\n"
 ;;
