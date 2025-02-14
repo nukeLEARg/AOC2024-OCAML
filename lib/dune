@@ -2,4 +2,12 @@
  (name advent)
  (preprocess
   (pps ppx_jane))
- (libraries core re sexplib))
+ (libraries core re sexplib)
+ (modules Advent))
+
+(library
+ (name nukegraph)
+ (preprocess
+  (pps ppx_jane))
+ (libraries core ocamlgraph)
+ (modules Nukegraph))

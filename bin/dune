@@ -51,7 +51,7 @@
   Day23)
  (preprocess
   (pps ppx_jane))
- (libraries advent core core_unix ocamlgraph))
+ (libraries advent core core_unix ocamlgraph nukegraph))
 
 (env
  (dev
