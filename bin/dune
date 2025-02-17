@@ -23,7 +23,9 @@
   Day20
   Day21
   Day22
-  Day23)
+  Day23
+  Day24
+  Day25)
  (names
   Runner
   Day01
@@ -48,7 +50,9 @@
   Day20
   Day21
   Day22
-  Day23)
+  Day23
+  Day24
+  Day25)
  (preprocess
   (pps ppx_jane))
  (libraries advent core core_unix ocamlgraph nukegraph))

@@ -86,3 +86,26 @@ module W = struct
   let sub = ( - )
   let compare = compare
 end
+
+let all_directions = [ North; East; South; West ]
+
+let left_rot = function
+  | North -> West
+  | West -> South
+  | South -> East
+  | East -> North
+;;
+
+let right_rot = function
+  | North -> East
+  | East -> South
+  | South -> West
+  | West -> North
+;;
+
+let next_pos (x, y) = function
+  | North -> x, y - 1
+  | East -> x + 1, y
+  | South -> x, y + 1
+  | West -> x - 1, y
+;;

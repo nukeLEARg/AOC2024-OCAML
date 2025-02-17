@@ -1,69 +1,56 @@
 open Core
+open Core.Poly
 open Advent
 open Graph
 open Nukegraph
 
 let graph = CordDirMap.create ()
 
-let vertices =
-  [ 1, 0, East; 2, 0, East; 3, 0, East; 4, 0, East; 5, 0, East; 6, 0, East; 7, 0, East ]
-;;
-
-let () = List.iter ~f:(CordDirMap.add_vertex graph) vertices
-
-let edges =
-  [ (1, 0, East), (3, 0, East), 3
-  ; (3, 0, East), (4, 0, East), 4
-  ; (4, 0, East), (2, 0, East), 1
-  ; (1, 0, East), (6, 0, East), 2
-  ; (3, 0, East), (6, 0, East), 2
-  ; (6, 0, East), (5, 0, East), 3
-  ; (3, 0, East), (5, 0, East), 2
-  ; (5, 0, East), (2, 0, East), 2
-  ; (6, 0, East), (7, 0, East), 5
-  ; (7, 0, East), (2, 0, East), 2
-  ]
-;;
-
-let () =
-  List.iter edges ~f:(fun (v1, v2, w) ->
-    CordDirMap.add_edge_e graph (v1, w, v2);
-    CordDirMap.add_edge_e graph (v2, w, v1))
-;;
-
 module DijkstraAlgo = Path.Dijkstra (CordDirMap) (W)
 
-let start_vertex = 1, 0, East
-let end_vertex = 2, 0, East
-
 let () =
-  try
-    let edges, total_weight = DijkstraAlgo.shortest_path graph start_vertex end_vertex in
-    Printf.printf
-      "Shortest path from %s to %s has weight %d:\n"
-      (Display.vertex_name start_vertex)
-      (Display.vertex_name end_vertex)
-      total_weight;
-    List.iter edges ~f:(fun (v1, w, v2) ->
-      Printf.printf
-        "%s --[%d]--> %s\n"
-        (Display.vertex_name v1)
-        w
-        (Display.vertex_name v2);
-      highlighted_vertices := v1 :: !highlighted_vertices;
-      highlighted_vertices := v2 :: !highlighted_vertices;
-      highlighted_edges := (v1, w, v2) :: !highlighted_edges)
-  with
-  | Not_found ->
-    Printf.printf
-      "No path found from %s to %s\n"
-      (Display.vertex_name start_vertex)
-      (Display.vertex_name end_vertex)
-;;
-
-let () =
-  let dot_file = Out_channel.create "graph.dot" in
-  Dot.output_graph dot_file graph;
-  Out_channel.close dot_file;
-  Printf.printf "File written to graph.dot\n"
+  let map = read_lines "./inputs/d16/input.txt" in
+  let ymax = List.length map in
+  let xmax = String.length (List.hd_exn map) in
+  let start_x, start_y, end_x, end_y =
+    List.foldi map ~init:(0, 0, 0, 0) ~f:(fun y acc str ->
+      String.foldi str ~init:acc ~f:(fun x acc c ->
+        let sx, sy, ex, ey = acc in
+        match c with
+        | 'S' -> x, y, ex, ey
+        | 'E' -> sx, sy, x, y
+        | _ -> acc))
+  in
+  let start = start_x, start_y, East in
+  let ends = List.map all_directions ~f:(fun d -> end_x, end_y, d) in
+  List.iteri map ~f:(fun y row ->
+    String.iteri row ~f:(fun x c ->
+      if c <> '#'
+      then
+        List.iter all_directions ~f:(fun d ->
+          let vertex = x, y, d in
+          CordDirMap.add_vertex graph vertex)));
+  List.iteri map ~f:(fun y row ->
+    String.iteri row ~f:(fun x c ->
+      if c <> '#'
+      then
+        List.iter all_directions ~f:(fun dir ->
+          let current_vertex = x, y, dir in
+          let left_vertex = x, y, left_rot dir in
+          CordDirMap.add_edge_e graph (current_vertex, 1000, left_vertex);
+          let right_vertex = x, y, right_rot dir in
+          CordDirMap.add_edge_e graph (current_vertex, 1000, right_vertex);
+          let nx, ny = next_pos (x, y) dir in
+          if nx >= 0 && nx < xmax && ny >= 0 && ny < ymax
+          then (
+            let cell = (List.nth_exn map ny).[nx] in
+            if cell <> '#'
+            then CordDirMap.add_edge_e graph (current_vertex, 1, (nx, ny, dir))))));
+  let res =
+    List.fold ends ~init:0 ~f:(fun acc endv ->
+      let _, dist = DijkstraAlgo.shortest_path graph start endv in
+      if acc = 0 || dist < acc then dist else acc)
+  in
+  let res2 = 1 in
+  Printf.printf "\nPart 1: %i\nPart 2: %i\n" res res2
 ;;
